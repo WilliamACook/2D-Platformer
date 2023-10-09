@@ -7,21 +7,22 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] float m_fMovement;
+    [SerializeField] float m_fConstantSpeed;
     [SerializeField] float m_fJump;
-   
+
     [SerializeField] Transform m_castPos;
     [SerializeField] float m_castradius;
     [SerializeField] LayerMask m_layerMask;
 
     bool isGrounded;
 
-    Rigidbody2D m_body;
+    private Rigidbody2D rb;
 
     float m_f_Axis;
 
     private void Awake()
     {
-        m_body = GetComponent<Rigidbody2D>();
+        rb = GetComponent<Rigidbody2D>();
     }
 
     // Start is called before the first frame update
@@ -34,13 +35,16 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         isGrounded = Physics2D.CircleCast(m_castPos.position, m_castradius, Vector2.zero, 0, m_layerMask);
+       //rb.velocity = new Vector2 (m_f_Axis * m_fMovement, rb.velocity.y);
+       rb.velocity = new Vector2 (1 * m_fConstantSpeed, rb.velocity.y);  
+       
     }
 
     public void Jump(InputAction.CallbackContext context)
     {
-        if (isGrounded)
+        if (isGrounded && context.performed)
         {
-            m_body.AddForce(Vector2.up * m_fJump);
+            rb.AddForce(Vector2.up * m_fJump, ForceMode2D.Impulse);
         }
         
     }
