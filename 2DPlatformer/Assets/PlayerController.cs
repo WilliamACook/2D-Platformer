@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] Transform m_castPos;
     [SerializeField] float m_castradius;
     [SerializeField] LayerMask m_layerMask;
+    [SerializeField] PlayerInput m_playerInput;
 
     bool isGrounded;
 
@@ -23,11 +24,50 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        m_playerInput = GetComponent<PlayerInput>();
     }
+ 
 
     // Start is called before the first frame update
     void Start()
     {
+        m_playerInput.actions.FindAction("Jump").performed += Jump;
+        m_playerInput.actions.FindAction("Move").performed += Handle_MovedPerformed;
+        m_playerInput.actions.FindAction("Move").canceled += Handle_MovedCancelled;
+    }
+
+    bool m_b_InMoveActive;
+    Coroutine c_RMove;
+
+
+   void Handle_MovedPerformed(InputAction.CallbackContext context)
+    {
+        m_f_Axis = context.ReadValue<float>();
+        m_b_InMoveActive = true;
+        if(c_RMove == null)
+        {
+            c_RMove = StartCoroutine(C_MoveUpdate());
+        }
+    }
+
+    void Handle_MovedCancelled(InputAction.CallbackContext context)
+    {
+        m_f_Axis = context.ReadValue<float>();
+        m_b_InMoveActive = false;
+        if(c_RMove != null) 
+        { 
+            StopCoroutine(c_RMove);
+            c_RMove = null;
+        }
+    }
+
+    IEnumerator C_MoveUpdate()
+    {
+        while(m_b_InMoveActive)
+        {
+            Debug.Log($"Move Input = {m_f_Axis}");
+            yield return new WaitForFixedUpdate();
+        }
         
     }
 
@@ -35,7 +75,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         isGrounded = Physics2D.CircleCast(m_castPos.position, m_castradius, Vector2.zero, 0, m_layerMask);
-       //rb.velocity = new Vector2 (m_f_Axis * m_fMovement, rb.velocity.y);
+       //rb.velocity = new Vector2 (m_f_Axis * m_fMovement, Time.deltaTime);
        rb.velocity = new Vector2 (1 * m_fConstantSpeed, rb.velocity.y);  
        
     }
@@ -49,10 +89,10 @@ public class PlayerController : MonoBehaviour
         
     }
 
-    public void Move(InputAction.CallbackContext context)
-    {
-        m_f_Axis = context.ReadValue<float>();
-    }
+    //public void Move(InputAction.CallbackContext context)
+    //{
+        //m_f_Axis = context.ReadValue<float>();
+    //}
 
     private void OnDrawGizmos()
     {
