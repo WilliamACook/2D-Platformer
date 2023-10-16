@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -55,7 +56,7 @@ public class PlayerController : MonoBehaviour
         m_f_Axis = context.ReadValue<float>();
         m_b_InMoveActive = false;
         if(c_RMove != null) 
-        { 
+        {
             StopCoroutine(c_RMove);
             c_RMove = null;
         }
@@ -66,6 +67,8 @@ public class PlayerController : MonoBehaviour
         while(m_b_InMoveActive)
         {
             Debug.Log($"Move Input = {m_f_Axis}");
+            //rb.AddForce(new Vector2((m_f_Axis * m_fMovement), 0), ForceMode2D.Force);
+            rb.velocity = new Vector2(m_f_Axis * m_fMovement, rb.velocity.y);
             yield return new WaitForFixedUpdate();
         }
         
@@ -75,9 +78,15 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         isGrounded = Physics2D.CircleCast(m_castPos.position, m_castradius, Vector2.zero, 0, m_layerMask);
-       //rb.velocity = new Vector2 (m_f_Axis * m_fMovement, Time.deltaTime);
-       rb.velocity = new Vector2 (1 * m_fConstantSpeed, rb.velocity.y);  
-       
+        //rb.velocity = new Vector2 (1 * m_fConstantSpeed, rb.velocity.y);  
+
+    }
+    //public float constantMove;
+
+    private void FixedUpdate()
+    {
+        //rb.AddForce(new Vector2(constantMove, 0), ForceMode2D.Force) ;
+        
     }
 
     public void Jump(InputAction.CallbackContext context)
@@ -108,4 +117,11 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if(other.gameObject.CompareTag("KillObject"))
+        {
+            Debug.Log("Die");
+        }
+    }
 }
