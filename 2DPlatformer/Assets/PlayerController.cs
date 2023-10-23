@@ -17,6 +17,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] PlayerInput m_playerInput;
 
     bool isGrounded;
+    bool jumpPending = false;
 
     private Rigidbody2D rb;
 
@@ -66,7 +67,7 @@ public class PlayerController : MonoBehaviour
     {
         while(m_b_InMoveActive)
         {
-            Debug.Log($"Move Input = {m_f_Axis}");
+            //Debug.Log($"Move Input = {m_f_Axis}");
             //rb.AddForce(new Vector2((m_f_Axis * m_fMovement), 0), ForceMode2D.Force);
             rb.velocity = new Vector2(m_f_Axis * m_fMovement, rb.velocity.y);
             yield return new WaitForFixedUpdate();
@@ -86,16 +87,35 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         //rb.AddForce(new Vector2(constantMove, 0), ForceMode2D.Force) ;
-        
+        if(jumpPending && isGrounded)
+        {
+            Debug.Log("JumpBuffered");
+            jumpPending = false;
+            rb.AddForce(Vector2.up * m_fJump, ForceMode2D.Impulse);
+            
+        }      
     }
+    Coroutine JumpBuffer;
 
     public void Jump(InputAction.CallbackContext context)
-    {
+    {      
         if (isGrounded && context.performed)
         {
             rb.AddForce(Vector2.up * m_fJump, ForceMode2D.Impulse);
+            //jumpPending = false;
         }
-        
+
+        if(!isGrounded && context.performed) 
+        { 
+            jumpPending = true;
+            //JumpBuffer = StartCoroutine(C_JumpBuffered());
+            Debug.Log("Jump Pending");
+        }          
+    }
+
+    IEnumerator C_JumpBuffered()
+    {
+        yield return new WaitForFixedUpdate();
     }
 
     //public void Move(InputAction.CallbackContext context)
