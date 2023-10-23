@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float m_fMovement;
     [SerializeField] float m_fConstantSpeed;
     [SerializeField] float m_fJump;
+    float m_fBufferedJump = 16;
 
     [SerializeField] Transform m_castPos;
     [SerializeField] float m_castradius;
@@ -91,7 +92,7 @@ public class PlayerController : MonoBehaviour
         {
             Debug.Log("JumpBuffered");
             jumpPending = false;
-            rb.AddForce(Vector2.up * m_fJump, ForceMode2D.Impulse);
+            rb.AddForce(Vector2.up * m_fBufferedJump, ForceMode2D.Impulse);
             
         }      
     }
