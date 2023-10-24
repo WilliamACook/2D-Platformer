@@ -16,7 +16,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] LayerMask m_layerMask;
     [SerializeField] PlayerInput m_playerInput;
 
-    bool isGrounded;
+    //bool isGrounded;
     bool jumpPending;
 
     private Rigidbody2D rb;
@@ -63,6 +63,7 @@ public class PlayerController : MonoBehaviour
         {
             StopCoroutine(c_RMove);
             c_RMove = null;
+            rb.velocity = new Vector2(0 * 0, rb.velocity.y);
         }
     }
 
@@ -81,10 +82,10 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        isGrounded = Physics2D.CircleCast(m_castPos.position, m_castradius, Vector2.zero, 0, m_layerMask);
+        //isGrounded = Physics2D.CircleCast(m_castPos.position, m_castradius, Vector2.zero, 0, m_layerMask);
         
         //rb.velocity = new Vector2 (1 * m_fConstantSpeed, rb.velocity.y);  
-        if(isGrounded)
+        if(IsGrounded())
         {
             coyoteTimeCounter = coyoteTime;
             
@@ -109,17 +110,20 @@ public class PlayerController : MonoBehaviour
         //}      
     }
     Coroutine JumpBuffer;
-
+    private bool IsGrounded()
+    {
+        return Physics2D.CircleCast(m_castPos.position, m_castradius, Vector2.zero, 0, m_layerMask);
+    }
     public void Jump(InputAction.CallbackContext context)
     {
-        if (isGrounded && context.performed)
+        if (IsGrounded() && context.performed)
         {
             //rb.AddForce(Vector2.up * m_fJump, ForceMode2D.Impulse);
             coyoteTimeCounter = coyoteTime;
             jumpPending = false;
         }
  
-        if(!isGrounded && context.performed) 
+        if(!IsGrounded() && context.performed) 
         { 
             jumpPending = true;
             //JumpBuffer = StartCoroutine(C_JumpBuffered());
@@ -128,7 +132,8 @@ public class PlayerController : MonoBehaviour
        
         if(coyoteTimeCounter > 0f && context.performed)
         {
-            rb.AddForce(Vector2.up * m_fJump, ForceMode2D.Impulse);
+            //rb.AddForce(Vector2.up * m_fJump, ForceMode2D.Impulse);
+            rb.velocity = new Vector2(rb.velocity.x, m_fJump);
 
             //This needs to be put where space is released.
             coyoteTimeCounter = 0;
@@ -147,16 +152,16 @@ public class PlayerController : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        if (isGrounded)
-        {
-            Gizmos.color = Color.yellow;
-            Gizmos.DrawSphere(m_castPos.position, m_castradius);
-        }
-        else
-        {
-            Gizmos.color = Color.red;
-            Gizmos.DrawSphere(m_castPos.position, m_castradius);
-        }
+        //if (isGrounded)
+        //{
+           // Gizmos.color = Color.yellow;
+            //Gizmos.DrawSphere(m_castPos.position, m_castradius);
+       // }
+        //else
+       // {
+           // Gizmos.color = Color.red;
+            //Gizmos.DrawSphere(m_castPos.position, m_castradius);
+       // }
     }
 
     void OnTriggerEnter2D(Collider2D other)
