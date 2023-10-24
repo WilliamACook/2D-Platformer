@@ -10,7 +10,6 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float m_fMovement;
     [SerializeField] float m_fConstantSpeed;
     [SerializeField] float m_fJump;
-    float m_fBufferedJump = 16;
 
     [SerializeField] Transform m_castPos;
     [SerializeField] float m_castradius;
@@ -18,9 +17,12 @@ public class PlayerController : MonoBehaviour
     [SerializeField] PlayerInput m_playerInput;
 
     bool isGrounded;
-    bool jumpPending = false;
+    bool jumpPending;
 
     private Rigidbody2D rb;
+
+    private float coyoteTime = 0.2f;
+    private float coyoteTimeCounter;
 
     float m_f_Axis;
 
@@ -80,7 +82,17 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         isGrounded = Physics2D.CircleCast(m_castPos.position, m_castradius, Vector2.zero, 0, m_layerMask);
+        
         //rb.velocity = new Vector2 (1 * m_fConstantSpeed, rb.velocity.y);  
+        if(isGrounded)
+        {
+            coyoteTimeCounter = coyoteTime;
+            
+        }
+        else
+        {
+            coyoteTimeCounter -= Time.deltaTime;
+        }
 
     }
     //public float constantMove;
@@ -88,30 +100,39 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         //rb.AddForce(new Vector2(constantMove, 0), ForceMode2D.Force) ;
-        if(jumpPending && isGrounded)
-        {
-            Debug.Log("JumpBuffered");
-            jumpPending = false;
-            rb.AddForce(Vector2.up * m_fBufferedJump, ForceMode2D.Impulse);
+        //if(jumpPending && isGrounded)
+        //{
+            //Debug.Log("JumpBuffered");
+            //jumpPending = false;
+            //rb.AddForce(Vector2.up * m_fBufferedJump, ForceMode2D.Impulse);
             
-        }      
+        //}      
     }
     Coroutine JumpBuffer;
 
     public void Jump(InputAction.CallbackContext context)
-    {      
+    {
         if (isGrounded && context.performed)
         {
-            rb.AddForce(Vector2.up * m_fJump, ForceMode2D.Impulse);
-            //jumpPending = false;
+            //rb.AddForce(Vector2.up * m_fJump, ForceMode2D.Impulse);
+            coyoteTimeCounter = coyoteTime;
+            jumpPending = false;
         }
-
+ 
         if(!isGrounded && context.performed) 
         { 
             jumpPending = true;
             //JumpBuffer = StartCoroutine(C_JumpBuffered());
             Debug.Log("Jump Pending");
-        }          
+        }
+       
+        if(coyoteTimeCounter > 0f && context.performed)
+        {
+            rb.AddForce(Vector2.up * m_fJump, ForceMode2D.Impulse);
+
+            //This needs to be put where space is released.
+            coyoteTimeCounter = 0;
+        }
     }
 
     IEnumerator C_JumpBuffered()
