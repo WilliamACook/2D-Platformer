@@ -16,13 +16,13 @@ public class PlayerController : MonoBehaviour
     [SerializeField] LayerMask m_layerMask;
     [SerializeField] PlayerInput m_playerInput;
 
-    //bool isGrounded;
-    bool jumpPending;
-
     private Rigidbody2D rb;
 
     private float coyoteTime = 0.2f;
     private float coyoteTimeCounter;
+
+    private float jumpBufferTime = 0.2f;
+    private float jumpBufferCounter;
 
     float m_f_Axis;
 
@@ -74,7 +74,7 @@ public class PlayerController : MonoBehaviour
         {
             //Debug.Log($"Move Input = {m_f_Axis}");
             //rb.AddForce(new Vector2((m_f_Axis * m_fMovement), 0), ForceMode2D.Force);
-            rb.velocity = new Vector2(m_f_Axis * m_fMovement, rb.velocity.y);
+            rb.velocity = new Vector2(m_f_Axis * m_fMovement, rb.velocity.y);           
             yield return new WaitForFixedUpdate();
         }
         
@@ -96,47 +96,60 @@ public class PlayerController : MonoBehaviour
             coyoteTimeCounter -= Time.deltaTime;
         }
 
+        //Debug.Log(jumpBufferCounter);
+
     }
     //public float constantMove;
 
     private void FixedUpdate()
     {
         //rb.AddForce(new Vector2(constantMove, 0), ForceMode2D.Force) ;
-        //if(jumpPending && isGrounded)
-        //{
-            //Debug.Log("JumpBuffered");
-            //jumpPending = false;
-            //rb.AddForce(Vector2.up * m_fBufferedJump, ForceMode2D.Impulse);
-            
-        //}      
     }
-    Coroutine JumpBuffer;
+
+
     private bool IsGrounded()
     {
         return Physics2D.CircleCast(m_castPos.position, m_castradius, Vector2.zero, 0, m_layerMask);
     }
+
+    Coroutine c_JumpBuffer;
     public void Jump(InputAction.CallbackContext context)
     {
+        if(context.performed)
+        {
+            jumpBufferCounter = jumpBufferTime;
+
+        }
+        else
+        {
+            if(c_JumpBuffer == null)
+            {
+                c_JumpBuffer = StartCoroutine(C_JumpBuffered());
+
+            }
+        }
+
         if (IsGrounded() && context.performed)
         {
             //rb.AddForce(Vector2.up * m_fJump, ForceMode2D.Impulse);
             coyoteTimeCounter = coyoteTime;
             jumpPending = false;
         }
- 
-        if(!IsGrounded() && context.performed) 
-        { 
-            jumpPending = true;
-            //JumpBuffer = StartCoroutine(C_JumpBuffered());
-            Debug.Log("Jump Pending");
-        }
        
-        if(coyoteTimeCounter > 0f && context.performed)
+        if(coyoteTimeCounter > 0f && jumpBufferCounter > 0f)
         {
             //rb.AddForce(Vector2.up * m_fJump, ForceMode2D.Impulse);
             rb.velocity = new Vector2(rb.velocity.x, m_fJump);
 
+            if(c_JumpBuffer != null)
+            {
+                StopCoroutine(c_JumpBuffer);
+                Debug.Log("JumpBuffered");
+                c_JumpBuffer= null;
+
+            }
            
+            jumpBufferCounter= 0f;
         }
 
         if (context.canceled && rb.velocity.y > 0f)
@@ -149,6 +162,7 @@ public class PlayerController : MonoBehaviour
 
     IEnumerator C_JumpBuffered()
     {
+        jumpBufferCounter -= Time.deltaTime;
         yield return new WaitForFixedUpdate();
     }
 
