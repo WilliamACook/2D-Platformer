@@ -133,7 +133,6 @@ public class PlayerController : MonoBehaviour
         {
             //rb.AddForce(Vector2.up * m_fJump, ForceMode2D.Impulse);
             coyoteTimeCounter = coyoteTime;
-            jumpPending = false;
         }
        
         if(coyoteTimeCounter > 0f && jumpBufferCounter > 0f)
