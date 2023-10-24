@@ -39,6 +39,7 @@ public class PlayerController : MonoBehaviour
         m_playerInput.actions.FindAction("Jump").performed += Jump;
         m_playerInput.actions.FindAction("Move").performed += Handle_MovedPerformed;
         m_playerInput.actions.FindAction("Move").canceled += Handle_MovedCancelled;
+        m_playerInput.actions.FindAction("Jump").canceled += Jump;
     }
 
     bool m_b_InMoveActive;
@@ -135,8 +136,14 @@ public class PlayerController : MonoBehaviour
             //rb.AddForce(Vector2.up * m_fJump, ForceMode2D.Impulse);
             rb.velocity = new Vector2(rb.velocity.x, m_fJump);
 
-            //This needs to be put where space is released.
+           
+        }
+
+        if (context.canceled && rb.velocity.y > 0f)
+        {
+            rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
             coyoteTimeCounter = 0;
+            //Debug.Log("Spacebar released");
         }
     }
 
