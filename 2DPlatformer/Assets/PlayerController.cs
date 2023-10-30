@@ -19,7 +19,7 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rb;
     private BoxCollider2D boxCollider;
 
-    private float coyoteTime = 0.2f;
+    private float coyoteTime = 0.3f;
     private float coyoteTimeCounter;
 
     private float jumpBufferTime = 0.2f;
@@ -138,12 +138,6 @@ public class PlayerController : MonoBehaviour
                 c_JumpBuffer = StartCoroutine(C_JumpBuffered());
 
             }
-        }
-
-        if (IsGrounded() && context.performed)
-        {
-            //rb.AddForce(Vector2.up * m_fJump, ForceMode2D.Impulse);
-            coyoteTimeCounter = coyoteTime;
         }
        
         if(coyoteTimeCounter > 0f && jumpBufferCounter > 0f && context.performed)
