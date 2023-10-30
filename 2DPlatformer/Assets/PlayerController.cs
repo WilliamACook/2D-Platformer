@@ -17,6 +17,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] PlayerInput m_playerInput;
 
     private Rigidbody2D rb;
+    private BoxCollider2D boxCollider;
 
     private float coyoteTime = 0.2f;
     private float coyoteTimeCounter;
@@ -30,6 +31,7 @@ public class PlayerController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         m_playerInput = GetComponent<PlayerInput>();
+        boxCollider = GetComponent<BoxCollider2D>();
     }
  
 
@@ -89,11 +91,20 @@ public class PlayerController : MonoBehaviour
         if(IsGrounded())
         {
             coyoteTimeCounter = coyoteTime;
-            
+            boxCollider.size = new Vector2(1f, 1f);
+            boxCollider.offset = new Vector2(0f, 0f);
+
         }
         else
         {
             coyoteTimeCounter -= Time.deltaTime;
+        }
+
+        //Corner clips on jumps
+        if (rb.velocity.y > 0f || !IsGrounded())
+        {
+            boxCollider.size = new Vector2(1f, 0.5f);
+            boxCollider.offset = new Vector2(0f, 0.28f);
         }
 
         //Debug.Log(jumpBufferCounter);
@@ -135,7 +146,7 @@ public class PlayerController : MonoBehaviour
             coyoteTimeCounter = coyoteTime;
         }
        
-        if(coyoteTimeCounter > 0f && jumpBufferCounter > 0f)
+        if(coyoteTimeCounter > 0f && jumpBufferCounter > 0f && context.performed)
         {
             //rb.AddForce(Vector2.up * m_fJump, ForceMode2D.Impulse);
             rb.velocity = new Vector2(rb.velocity.x, m_fJump);
@@ -157,6 +168,7 @@ public class PlayerController : MonoBehaviour
             coyoteTimeCounter = 0;
             //Debug.Log("Spacebar released");
         }
+
     }
 
     IEnumerator C_JumpBuffered()
