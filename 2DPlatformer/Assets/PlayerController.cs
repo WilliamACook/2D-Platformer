@@ -106,9 +106,9 @@ public class PlayerController : MonoBehaviour
             boxCollider.size = new Vector2(1f, 0.5f);
             boxCollider.offset = new Vector2(0f, 0.28f);
         }
+        JumpBuffer();
 
         //Debug.Log(jumpBufferCounter);
-
     }
     //public float constantMove;
 
@@ -144,8 +144,9 @@ public class PlayerController : MonoBehaviour
         {
             //rb.AddForce(Vector2.up * m_fJump, ForceMode2D.Impulse);
             rb.velocity = new Vector2(rb.velocity.x, m_fJump);
-
-            if(c_JumpBuffer != null)
+            Debug.Log(jumpBufferCounter);
+            JumpBuffer();
+            if (c_JumpBuffer != null)
             {
                 StopCoroutine(c_JumpBuffer);
                 Debug.Log("JumpBuffered");
@@ -153,7 +154,7 @@ public class PlayerController : MonoBehaviour
 
             }
            
-            jumpBufferCounter= 0f;
+            //jumpBufferCounter= 0f;
         }
 
         if (context.canceled && rb.velocity.y > 0f)
@@ -165,16 +166,34 @@ public class PlayerController : MonoBehaviour
 
     }
 
+    public void JumpBuffer()
+    {
+        if (coyoteTimeCounter > 0f && jumpBufferCounter > 0f)
+        {
+            rb.velocity = new Vector2(rb.velocity.x, m_fJump);
+
+            if (c_JumpBuffer != null)
+            {
+                StopCoroutine(c_JumpBuffer);
+                Debug.Log("JumpBuffered");
+                c_JumpBuffer = null;
+
+            }
+
+            jumpBufferCounter = 0f;
+        }
+        else
+        {
+            jumpBufferCounter -= Time.deltaTime;
+        }
+    }
+
     IEnumerator C_JumpBuffered()
     {
         jumpBufferCounter -= Time.deltaTime;
+        Debug.Log(jumpBufferCounter);
         yield return new WaitForFixedUpdate();
     }
-
-    //public void Move(InputAction.CallbackContext context)
-    //{
-        //m_f_Axis = context.ReadValue<float>();
-    //}
 
     private void OnDrawGizmos()
     {
