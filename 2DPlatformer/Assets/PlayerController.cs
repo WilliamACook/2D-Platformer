@@ -73,6 +73,13 @@ public class PlayerController : MonoBehaviour
             StopCoroutine(c_RMove);
             c_RMove = null;
             rb.velocity = new Vector2(0 * 0, rb.velocity.y);
+
+           
+            //Sets Collision box size to normal
+            boxCollider.size = new Vector2(1f, 1f);
+            boxCollider.offset = new Vector2(0f, 0f);
+
+
         }
     }
 
@@ -84,13 +91,38 @@ public class PlayerController : MonoBehaviour
             //rb.AddForce(new Vector2((m_f_Axis * m_fMovement), 0), ForceMode2D.Force);
             if(!nearEdge)
             {
-                rb.velocity = new Vector2(m_f_Axis * m_fMovement, rb.velocity.y);           
+                if (IsGrounded())
+                {
+                    coyoteTimeCounter = coyoteTime;
+
+                    //Sets Collision box size to normal
+                    boxCollider.size = new Vector2(1f, 1f);
+                    boxCollider.offset = new Vector2(0f, 0f);
+
+                }
+                else
+                {
+                    coyoteTimeCounter -= Time.deltaTime;
+                }
+
+                //Corner clips on jumps
+                if (rb.velocity.y > 0f || !IsGrounded())
+                {
+                    boxCollider.size = new Vector2(1f, 0.5f);
+                    boxCollider.offset = new Vector2(0f, 0.28f);
+                }
+                rb.velocity = new Vector2(m_f_Axis * m_fMovement, rb.velocity.y);
+                //JumpBuffer();
                 yield return new WaitForFixedUpdate();
 
             }
             else
             {
                 m_b_InMoveActive = false;
+                //Debug.Log("Stop");
+                StopCoroutine(c_RMove);
+                c_RMove = null;
+                rb.velocity = new Vector2(0 * 0, rb.velocity.y);
                 yield return new WaitForFixedUpdate();            
             }
         }
@@ -103,39 +135,6 @@ public class PlayerController : MonoBehaviour
         //isGrounded = Physics2D.CircleCast(m_castPos.position, m_castradius, Vector2.zero, 0, m_layerMask);
         
         //rb.velocity = new Vector2 (1 * m_fConstantSpeed, rb.velocity.y);  
-
-        if(IsGrounded())
-        {
-            coyoteTimeCounter = coyoteTime;
-
-            //Sets Collision box size to normal
-            boxCollider.size = new Vector2(1f, 1f);
-            boxCollider.offset = new Vector2(0f, 0f);
-
-        }
-        else
-        {
-            coyoteTimeCounter -= Time.deltaTime;
-        }
-
-        //Corner clips on jumps
-        if (rb.velocity.y > 0f || !IsGrounded())
-        {
-            boxCollider.size = new Vector2(1f, 0.5f);
-            boxCollider.offset = new Vector2(0f, 0.28f);
-        }
-
-        if (nearEdge)
-        {
-            m_b_InMoveActive = false;
-            if (c_RMove != null)
-            {
-                Debug.Log("Stop");
-                StopCoroutine(c_RMove);
-                c_RMove = null;
-                rb.velocity = new Vector2(0 * 0, rb.velocity.y);
-            }
-        }
 
         JumpBuffer();
 
@@ -166,12 +165,12 @@ public class PlayerController : MonoBehaviour
         {
             jumpBufferCounter = jumpBufferTime;
 
-            if(coyoteTimeCounter > 0f && jumpBufferCounter > 0f)
+            if(coyoteTimeCounter > 0f && jumpBufferCounter > 0f || IsGrounded())
             {
                 //rb.AddForce(Vector2.up * m_fJump, ForceMode2D.Impulse);
                 rb.velocity = new Vector2(rb.velocity.x, m_fJump);
                 //Debug.Log(jumpBufferCounter);
-                JumpBuffer();
+                //JumpBuffer();
                 if (c_JumpBuffer != null)
                 {
                     StopCoroutine(c_JumpBuffer);
@@ -212,7 +211,7 @@ public class PlayerController : MonoBehaviour
             if (c_JumpBuffer != null)
             {
                 StopCoroutine(c_JumpBuffer);
-                //Debug.Log("JumpBuffered");
+                Debug.Log("JumpBuffered");
                 c_JumpBuffer = null;
 
             }
@@ -244,7 +243,7 @@ public class PlayerController : MonoBehaviour
 
     IEnumerator C_JumpBuffered()
     {
-        jumpBufferCounter -= Time.deltaTime;
+        //jumpBufferCounter -= Time.deltaTime;
         //Debug.Log(jumpBufferCounter);
         yield return new WaitForFixedUpdate();
     }
