@@ -6,6 +6,7 @@ TagManager:
   tags:
   - KillObject
   - Corner
+  - Bullet
   layers:
   - Default
   - TransparentFX

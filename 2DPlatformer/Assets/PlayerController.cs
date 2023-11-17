@@ -352,7 +352,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(canBufferJump) 
+        if(canBufferJump && IsGrounded()) 
         {
             Debug.Log("Jump");
             rb.velocity = new Vector2(rb.velocity.x, m_fJump);

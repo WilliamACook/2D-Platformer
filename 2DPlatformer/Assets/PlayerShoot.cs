@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -23,18 +24,17 @@ public class PlayerShoot : MonoBehaviour
     private void OnEnable()
     {
         m_playerInput.actions.FindAction("MousePosition").performed += MousePosition;
-        m_playerInput.actions.FindAction("Shoot").performed += Shoot;
-        m_playerInput.actions.FindAction("Shoot").started += PointerHoldBegin;
-        m_playerInput.actions.FindAction("Shoot").canceled += PointerHoldEnd;
+        m_playerInput.actions.FindAction("Shoot").performed += Handle_ShootPerformed;
+        m_playerInput.actions.FindAction("Shoot").canceled += Handle_ShootCancelled;
 
     }
+
 
     private void OnDisable()
     {
         m_playerInput.actions.FindAction("MousePosition").performed -= MousePosition;
-        m_playerInput.actions.FindAction("Shoot").performed -= Shoot;
-        m_playerInput.actions.FindAction("Shoot").started -= PointerHoldBegin;
-        m_playerInput.actions.FindAction("Shoot").canceled -= PointerHoldEnd;
+        m_playerInput.actions.FindAction("Shoot").performed -= Handle_ShootPerformed;
+        m_playerInput.actions.FindAction("Shoot").canceled -= Handle_ShootCancelled;
     }
     private void Start()
     {
@@ -52,42 +52,32 @@ public class PlayerShoot : MonoBehaviour
     }
     bool hold;
 
-    private void Shoot(InputAction.CallbackContext context)
+    private void Handle_ShootPerformed(InputAction.CallbackContext context)
     {
         Debug.Log("Fire!");
         Debug.Log(hold);
-        if(context.performed && canFire)
+        if(canFire)
         {
-                canFire = false;
-                StartCoroutine(c_FireTimer());
-                Instantiate(bullet, bulletTransform.position, Quaternion.identity);
-            
-            
+            canFire = false;
+            hold = true;
+            StartCoroutine(c_FireTimer());         
 
         }
-        else if(context.canceled)
-        {
-            StopCoroutine(c_FireTimer());
-        }
 
+    }
+    private void Handle_ShootCancelled(InputAction.CallbackContext context)
+    {        
+        StopCoroutine(c_FireTimer());
+        
     }
 
     IEnumerator c_FireTimer()
     {
+        Instantiate(bullet, bulletTransform.position, Quaternion.identity);
         yield return new WaitForSeconds(fireTimer);
         canFire = true;
-    }
-    public void PointerHoldBegin(InputAction.CallbackContext context)
-    {
-        Debug.Log("PointerHoldBegin");
-        hold = true;
-        
-    }
 
-    public void PointerHoldEnd(InputAction.CallbackContext context)
-    {
-        Debug.Log("PointerHoldEnd");
-        hold = false;
+        
     }
 
     // Update is called once per frame
