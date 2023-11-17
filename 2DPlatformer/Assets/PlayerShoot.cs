@@ -54,8 +54,6 @@ public class PlayerShoot : MonoBehaviour
 
     private void Handle_ShootPerformed(InputAction.CallbackContext context)
     {
-        Debug.Log("Fire!");
-        Debug.Log(hold);
         if(canFire)
         {
             canFire = false;
