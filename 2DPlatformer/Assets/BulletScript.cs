@@ -10,9 +10,11 @@ public class BulletScript : MonoBehaviour
     private Rigidbody2D rb;
     private Vector3 mousePos;
 
-    public float force;
-    public float size = 0.2f;
-    public int bounces;
+    [SerializeField] float force;
+    [SerializeField] float size = 0.2f;
+    [SerializeField] int bounces;
+
+    [SerializeField] GameObject effect;
 
     private void Awake()
     {
@@ -44,7 +46,12 @@ public class BulletScript : MonoBehaviour
         if (collision.gameObject.CompareTag("Ground"))
         {
             Debug.Log("Hit");
-            if (bounces == 0) { Destroy(gameObject); }
+            if (bounces == 0) 
+            { 
+                Instantiate(effect, transform.position, Quaternion.identity);
+                Destroy(gameObject); 
+            
+            }
             else { bounces--; }
 
         }

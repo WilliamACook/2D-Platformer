@@ -1810,7 +1810,7 @@ GameObject:
   m_Component:
   - component: {fileID: 648805460}
   - component: {fileID: 648805461}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: BulletTransform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2128,7 +2128,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 782830367}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Gizmo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2542,7 +2542,7 @@ GameObject:
   - component: {fileID: 1035493845}
   - component: {fileID: 1035493848}
   - component: {fileID: 1035493849}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -3204,7 +3204,7 @@ GameObject:
   - component: {fileID: 1202098289}
   - component: {fileID: 1202098288}
   - component: {fileID: 1202098291}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Main Camera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
@@ -4795,7 +4795,7 @@ GameObject:
   - component: {fileID: 2102740513}
   - component: {fileID: 2102740514}
   - component: {fileID: 2102740515}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: RotatePoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5139,3 +5139,64 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e3bea11e8d9ef9a4b971e683b5a7c9cf, type: 3}
+--- !u!1001 &8828411784826290616
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2085081825057424142, guid: 0db57314fce77864d87cf858224cc78f, type: 3}
+      propertyPath: m_Name
+      value: BulletExplode
+      objectReference: {fileID: 0}
+    - target: {fileID: 8407403695217201824, guid: 0db57314fce77864d87cf858224cc78f, type: 3}
+      propertyPath: m_RootOrder
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 8407403695217201824, guid: 0db57314fce77864d87cf858224cc78f, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -1.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 8407403695217201824, guid: 0db57314fce77864d87cf858224cc78f, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1.17
+      objectReference: {fileID: 0}
+    - target: {fileID: 8407403695217201824, guid: 0db57314fce77864d87cf858224cc78f, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.03
+      objectReference: {fileID: 0}
+    - target: {fileID: 8407403695217201824, guid: 0db57314fce77864d87cf858224cc78f, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 8407403695217201824, guid: 0db57314fce77864d87cf858224cc78f, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 8407403695217201824, guid: 0db57314fce77864d87cf858224cc78f, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8407403695217201824, guid: 0db57314fce77864d87cf858224cc78f, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8407403695217201824, guid: 0db57314fce77864d87cf858224cc78f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -90
+      objectReference: {fileID: 0}
+    - target: {fileID: 8407403695217201824, guid: 0db57314fce77864d87cf858224cc78f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8407403695217201824, guid: 0db57314fce77864d87cf858224cc78f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 0db57314fce77864d87cf858224cc78f, type: 3}

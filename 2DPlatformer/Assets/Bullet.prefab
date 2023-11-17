@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7788744424756002511}
   - component: {fileID: 6782407860119080248}
   - component: {fileID: 4430774543800153564}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Bullet
   m_TagString: Bullet
   m_Icon: {fileID: 0}
@@ -77,7 +77,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: -2413806693520163455, guid: ebe73ca9363db456bacf42c025bb4847, type: 3}
-  m_Color: {r: 1, g: 0.55888855, b: 0, a: 1}
+  m_Color: {r: 1, g: 0.88149357, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -101,7 +101,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   force: 15
   size: 0.2
-  bounces: 0
+  bounces: 2
+  effect: {fileID: 2085081825057424142, guid: 0db57314fce77864d87cf858224cc78f, type: 3}
 --- !u!50 &6782407860119080248
 Rigidbody2D:
   serializedVersion: 4
