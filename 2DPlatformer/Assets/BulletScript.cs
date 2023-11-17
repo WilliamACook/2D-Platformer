@@ -12,7 +12,7 @@ public class BulletScript : MonoBehaviour
 
     [SerializeField] float force;
     [SerializeField] float size = 0.2f;
-    [SerializeField] int bounces;
+    [SerializeField] int bounces;   
 
     [SerializeField] GameObject effect;
 
@@ -48,7 +48,7 @@ public class BulletScript : MonoBehaviour
             Debug.Log("Hit");
             if (bounces == 0) 
             { 
-                Instantiate(effect, transform.position, Quaternion.identity);
+                Instantiate(effect, transform.position, Quaternion.identity);              
                 Destroy(gameObject); 
             
             }

@@ -8,6 +8,7 @@ public class PlayerShoot : MonoBehaviour
 {
     [SerializeField] PlayerInput m_playerInput;
     [SerializeField] Camera m_camera;
+    [SerializeField] CameraShake m_shake;
 
     public GameObject bullet;
     public Transform bulletTransform;
@@ -59,7 +60,7 @@ public class PlayerShoot : MonoBehaviour
             canFire = false;
             hold = true;
             StartCoroutine(c_FireTimer());         
-
+            //StartCoroutine(m_shake.Shake(.15f, .4f));
         }
 
     }
