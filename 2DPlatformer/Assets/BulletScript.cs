@@ -30,11 +30,14 @@ public class BulletScript : MonoBehaviour
         Destroy(gameObject, 2);
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    void OnTriggerEnter2D(Collider2D other)
     {
-        if (!collision.gameObject.CompareTag("Player")) { Destroy(gameObject); }
-        
+        if(other.CompareTag("Ground"))
+        {
+            Destroy(gameObject);
+        }
     }
+
 
     // Update is called once per frame
     void Update()
