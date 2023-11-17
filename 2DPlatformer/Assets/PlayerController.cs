@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviour
 
     private Rigidbody2D rb;
     private BoxCollider2D boxCollider;
+    private TrailRenderer tr;
 
     private float coyoteTime = 0.3f;
     private float coyoteTimeCounter;
@@ -42,11 +43,12 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         m_playerInput = GetComponent<PlayerInput>();
         boxCollider = GetComponent<BoxCollider2D>();
+        tr = GetComponent<TrailRenderer>();
     }
  
 
     // Start is called before the first frame update
-    void Start()
+    void OnEnable()
     {
         m_playerInput.actions.FindAction("Jump").performed += Jump;
         m_playerInput.actions.FindAction("Move").performed += Handle_MovedPerformed;
@@ -55,6 +57,17 @@ public class PlayerController : MonoBehaviour
         m_playerInput.actions.FindAction("Crouch").performed += Crouch;
         m_playerInput.actions.FindAction("Crouch").canceled += Crouch;
         m_playerInput.actions.FindAction("Dash").performed += Dash;
+    }
+
+    private void OnDisable()
+    {
+        m_playerInput.actions.FindAction("Jump").performed -= Jump;
+        m_playerInput.actions.FindAction("Move").performed -= Handle_MovedPerformed;
+        m_playerInput.actions.FindAction("Move").canceled -= Handle_MovedCancelled;
+        m_playerInput.actions.FindAction("Jump").canceled -= Jump;
+        m_playerInput.actions.FindAction("Crouch").performed -= Crouch;
+        m_playerInput.actions.FindAction("Crouch").canceled -= Crouch;
+        m_playerInput.actions.FindAction("Dash").performed -= Dash;
     }
 
     bool m_b_InMoveActive;
@@ -106,11 +119,13 @@ public class PlayerController : MonoBehaviour
                     //Sets Collision box size to normal
                     boxCollider.size = new Vector2(1f, 1f);
                     boxCollider.offset = new Vector2(0f, 0f);
+                    tr.emitting = false;
 
                 }
                 else
                 {
                     coyoteTimeCounter -= Time.deltaTime;
+                    tr.emitting = true;
                 }
 
                 //Corner clips on jumps
@@ -118,6 +133,7 @@ public class PlayerController : MonoBehaviour
                 {
                     boxCollider.size = new Vector2(1f, 0.5f);
                     boxCollider.offset = new Vector2(0f, 0.28f);
+                    //m_castPos.transform.position = (0.478, -0.483, 0);
                 }
                 rb.velocity = new Vector2(m_f_Axis * m_fMovement, rb.velocity.y);
                 //JumpBuffer();
@@ -144,7 +160,7 @@ public class PlayerController : MonoBehaviour
         
         //rb.velocity = new Vector2 (1 * m_fConstantSpeed, rb.velocity.y);  
 
-        JumpBuffer();
+        //JumpBuffer();
 
         //Debug.Log(jumpBufferCounter);
     }
@@ -173,10 +189,15 @@ public class PlayerController : MonoBehaviour
         {
             jumpBufferCounter = jumpBufferTime;
 
+            if (!IsGrounded())
+            {
+                StartCoroutine(C_JumpBuffered());
+            }
+
             if(coyoteTimeCounter > 0f && jumpBufferCounter > 0f || IsGrounded())
             {
                 //rb.AddForce(Vector2.up * m_fJump, ForceMode2D.Impulse);
-                rb.velocity = new Vector2(rb.velocity.x, m_fJump);
+                rb.velocity = new Vector2(rb.velocity.x, m_fJump);               
                 //Debug.Log(jumpBufferCounter);
                 //JumpBuffer();
                 if (c_JumpBuffer != null)
@@ -193,13 +214,15 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            if(c_JumpBuffer == null)
-            {
-                c_JumpBuffer = StartCoroutine(C_JumpBuffered());
+            //if(c_JumpBuffer == null)
+            //{
+            //    c_JumpBuffer = StartCoroutine(C_JumpBuffered());
 
-            }
+            //}
         }
-       
+
+
+
 
         if (context.canceled && rb.velocity.y > 0f)
         {
@@ -208,6 +231,17 @@ public class PlayerController : MonoBehaviour
         
         }
 
+    }
+        bool canBufferJump;
+    IEnumerator C_JumpBuffered()
+    {
+        //jumpBufferCounter -= Time.deltaTime;
+        //Debug.Log(jumpBufferCounter);
+        //Debug.Log("Player Can jump");
+        canBufferJump = true;
+        yield return new WaitForSeconds(0.3f);
+        canBufferJump = false;
+        //Debug.Log("Player Cannot jump");
     }
 
     public void JumpBuffer()
@@ -219,7 +253,7 @@ public class PlayerController : MonoBehaviour
             if (c_JumpBuffer != null)
             {
                 StopCoroutine(c_JumpBuffer);
-                Debug.Log("JumpBuffered");
+                //Debug.Log("JumpBuffered");
                 c_JumpBuffer = null;
 
             }
@@ -277,13 +311,6 @@ public class PlayerController : MonoBehaviour
         
     }
 
-    IEnumerator C_JumpBuffered()
-    {
-        //jumpBufferCounter -= Time.deltaTime;
-        //Debug.Log(jumpBufferCounter);
-        yield return new WaitForFixedUpdate();
-    }
-
     private void OnDrawGizmos()
     {
         //if (isGrounded)
@@ -319,6 +346,16 @@ public class PlayerController : MonoBehaviour
         {
            nearEdge = false;
 
+
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(canBufferJump) 
+        {
+            Debug.Log("Jump");
+            rb.velocity = new Vector2(rb.velocity.x, m_fJump);
 
         }
     }

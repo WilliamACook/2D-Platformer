@@ -40,6 +40,24 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "MousePosition",
+                    "type": "Value",
+                    "id": "338c2e37-6456-40af-a793-a3c26d792fc8",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Shoot",
+                    "type": "Button",
+                    "id": "5fb386c1-86ce-44d1-b0f7-a4410d0d3da0",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -106,6 +124,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "Dash",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e2b15947-c739-4125-9263-afd09755e460",
+                    "path": "<Mouse>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MousePosition",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0a2eefd0-adca-4a58-a087-0000fb278422",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "Hold(duration=0.1,pressPoint=0.5)",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Shoot",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -25,6 +25,6 @@ public class Button_ClickOnly : MonoBehaviour, IPointerClickHandler
 
     void Test()
     {
-        Debug.Log("I was pressed");
+        //Debug.Log("I was pressed");
     }
 }
