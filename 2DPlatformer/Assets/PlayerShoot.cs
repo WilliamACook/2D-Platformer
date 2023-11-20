@@ -15,6 +15,8 @@ public class PlayerShoot : MonoBehaviour
     public bool canFire;
     public float fireTimer;
 
+    private float resetTimer;
+
 
 
     private void Awake()
@@ -39,7 +41,7 @@ public class PlayerShoot : MonoBehaviour
     }
     private void Start()
     {
-        
+        resetTimer = fireTimer;
     }
 
     private void MousePosition(InputAction.CallbackContext context)
@@ -65,16 +67,24 @@ public class PlayerShoot : MonoBehaviour
 
     }
     private void Handle_ShootCancelled(InputAction.CallbackContext context)
-    {        
+    {    
         StopCoroutine(c_FireTimer());
+        hold = false;
+        fireTimer = resetTimer;
         
     }
+    Coroutine fire;
+    //Do what i did with player controller check if coroutine exists / running
 
     IEnumerator c_FireTimer()
     {
-        Instantiate(bullet, bulletTransform.position, Quaternion.identity);
-        yield return new WaitForSeconds(fireTimer);
-        canFire = true;
+        fireTimer = resetTimer;
+        while(hold)
+        {
+            Instantiate(bullet, bulletTransform.position, Quaternion.identity);
+            yield return new WaitForSeconds(fireTimer);          
+            canFire = true;
+        }
 
         
     }

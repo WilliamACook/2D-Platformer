@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class CameraShake : MonoBehaviour
 {
+    [SerializeField] GameObject player;
     public IEnumerator Shake(float duration, float magnitude)
     {
         Vector3 originalPos = transform.position;
@@ -22,6 +23,6 @@ public class CameraShake : MonoBehaviour
             yield return null;
         }
 
-        transform.localPosition = originalPos;
+        transform.localPosition = new Vector2(0,0);
     }
 }

@@ -12,9 +12,11 @@ public class BulletScript : MonoBehaviour
 
     [SerializeField] float force;
     [SerializeField] float size = 0.2f;
-    [SerializeField] int bounces;   
+    [SerializeField] int bounces;
+    [SerializeField] public float damage;
 
     [SerializeField] GameObject effect;
+    //[SerializeField] CameraShake CameraShake;
 
     private void Awake()
     {
@@ -38,6 +40,17 @@ public class BulletScript : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
+        if (other.gameObject.CompareTag("ExplodingBarrel"))
+        {
+            Debug.Log("Boom");
+            Instantiate(effect, transform.position, Quaternion.identity);
+            var healthComponent = other.GetComponent<Health>();
+            if (healthComponent != null)
+            {
+                healthComponent.TakeDamage(10);
+            }
+            Destroy(gameObject);
+        }
         
     }
 
@@ -48,7 +61,7 @@ public class BulletScript : MonoBehaviour
             Debug.Log("Hit");
             if (bounces == 0) 
             { 
-                Instantiate(effect, transform.position, Quaternion.identity);              
+                Instantiate(effect, transform.position, Quaternion.identity);
                 Destroy(gameObject); 
             
             }

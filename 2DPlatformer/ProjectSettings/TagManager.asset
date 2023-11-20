@@ -8,6 +8,7 @@ TagManager:
   - Corner
   - Bullet
   - Ground
+  - ExplodingBarrel
   layers:
   - Default
   - TransparentFX

@@ -144,9 +144,13 @@ public class PlayerController : MonoBehaviour
             {
                 m_b_InMoveActive = false;
                 //Debug.Log("Stop");
-                StopCoroutine(c_RMove);
-                c_RMove = null;
-                rb.velocity = new Vector2(0 * 0, rb.velocity.y);
+                if (c_RMove != null)
+                {
+                    StopCoroutine(c_RMove);
+                    c_RMove = null;
+                    rb.velocity = new Vector2(0 * 0, rb.velocity.y);
+
+                }
                 yield return new WaitForFixedUpdate();            
             }
         }
