@@ -179,7 +179,7 @@ public class PlayerController : MonoBehaviour
     private bool IsGrounded()
     {
         return Physics2D.CircleCast(m_castPos.position, m_castradius, Vector2.zero, 0, m_layerMask);
-    }    
+    }
     
     private bool IsCorner()
     {

@@ -103,6 +103,7 @@ MonoBehaviour:
   force: 15
   size: 0.2
   bounces: 1
+  damage: 0
   effect: {fileID: 2085081825057424142, guid: 0db57314fce77864d87cf858224cc78f, type: 3}
 --- !u!50 &6782407860119080248
 Rigidbody2D:
