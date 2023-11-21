@@ -6,18 +6,22 @@ public class Health : MonoBehaviour
 {
     [SerializeField] float maxHealth;
     [SerializeField] GameObject effect;
+    private ExplosiveBarrel ExplosiveBarrel;
+    private SpriteRenderer sr;
     private float currentHealth;
     // Start is called before the first frame update
+
+    private void Awake()
+    {
+        ExplosiveBarrel = GetComponent<ExplosiveBarrel>();
+        sr = GetComponent<SpriteRenderer>();
+    }
     void Start()
     {
         currentHealth = maxHealth;
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     public void TakeDamage(float amount)
     {
@@ -25,6 +29,7 @@ public class Health : MonoBehaviour
 
         if(currentHealth <= 0) 
         {
+            ExplosiveBarrel.Detonate();
             Die();
         }
     }
@@ -32,6 +37,7 @@ public class Health : MonoBehaviour
     void Die()
     {
         Instantiate(effect, transform.position, Quaternion.identity);
-        Destroy(gameObject);
+        sr.enabled = false;
+        Destroy(gameObject, 3);
     }
 }

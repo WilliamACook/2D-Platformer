@@ -54,27 +54,38 @@ public class PlayerShoot : MonoBehaviour
         transform.rotation = Quaternion.Euler(0, 0, rotz);
     }
     bool hold;
+    Coroutine c_fire;
 
-    private void Handle_ShootPerformed(InputAction.CallbackContext context)
+    void Handle_ShootPerformed(InputAction.CallbackContext context)
     {
         if(canFire)
         {
-            canFire = false;
             hold = true;
-            StartCoroutine(c_FireTimer());         
+
+            //checks if coroutine is running
+            if(c_fire == null)
+            {
+                c_fire = StartCoroutine(c_FireTimer());
+                canFire = false;
+            }
+                     
             //StartCoroutine(m_shake.Shake(.15f, .4f));
         }
 
     }
-    private void Handle_ShootCancelled(InputAction.CallbackContext context)
+    void Handle_ShootCancelled(InputAction.CallbackContext context)
     {    
-        StopCoroutine(c_FireTimer());
-        hold = false;
         fireTimer = resetTimer;
+
+        if(c_fire != null)
+        {
+            hold = false;        
+            StopCoroutine(c_fire);
+            c_fire = null;
+
+        }
         
     }
-    Coroutine fire;
-    //Do what i did with player controller check if coroutine exists / running
 
     IEnumerator c_FireTimer()
     {
@@ -82,7 +93,8 @@ public class PlayerShoot : MonoBehaviour
         while(hold)
         {
             Instantiate(bullet, bulletTransform.position, Quaternion.identity);
-            yield return new WaitForSeconds(fireTimer);          
+            yield return new WaitForSeconds(fireTimer);
+            Debug.Log("test");
             canFire = true;
         }
 
