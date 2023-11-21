@@ -60,43 +60,39 @@ public class PlayerShoot : MonoBehaviour
     {
         if(canFire)
         {
+                     
+            //StartCoroutine(m_shake.Shake(.15f, .4f));
+        }
+
             hold = true;
 
             //checks if coroutine is running
             if(c_fire == null)
             {
+                c_fire = StartCoroutine(c_FireTimer());
+                canFire = false;
             }
-            //c_fire = StartCoroutine(c_FireTimer());
-            StartCoroutine(c_FireTimer());
-            canFire = false;
-                     
-            //StartCoroutine(m_shake.Shake(.15f, .4f));
-        }
-
     }
     void Handle_ShootCancelled(InputAction.CallbackContext context)
-    {    
-        fireTimer = resetTimer;
+    {        
 
         if(c_fire != null)
         {
+            hold = false;        
+            StopCoroutine(c_fire);
+            c_fire = null;
 
         }
-            hold = false;
-        //StopCoroutine(c_fire);
-        StopCoroutine(c_FireTimer());
-            c_fire = null;
         
     }
 
     IEnumerator c_FireTimer()
-    {
-        fireTimer = resetTimer;
+    {     
         while(hold)
         {
-            Instantiate(bullet, bulletTransform.position, Quaternion.identity);
+            Instantiate(bullet, bulletTransform.position, Quaternion.identity);          
             yield return new WaitForSeconds(fireTimer);
-            //Debug.Log("test");
+            Debug.Log("test");
             canFire = true;
         }
 
