@@ -30,10 +30,10 @@ public class ExplosiveBarrel : MonoBehaviour
     public void Detonate()
     {
         Collider2D[] objects = Physics2D.OverlapCircleAll(transform.position, explosionRange, explodable);
+        StartCoroutine(shake.Shake(.15f, .4f));
 
         foreach(Collider2D obj in objects)
         {
-            StartCoroutine(shake.Shake(.15f, .4f));
             if (DestroyObjects)
             {
                 Destroy(obj.gameObject);

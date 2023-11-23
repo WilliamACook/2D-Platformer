@@ -24,5 +24,6 @@ public class CameraShake : MonoBehaviour
         }
 
         transform.localPosition = new Vector2(0,0);
+        //StopCoroutine(Shake(0, 0));
     }
 }
