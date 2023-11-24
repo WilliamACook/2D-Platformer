@@ -17,6 +17,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] LayerMask m_layerMaskCorner;
     [SerializeField] PlayerInput m_playerInput;
     [SerializeField] GameObject m_playerShoot;
+    [SerializeField] GameObject cloudParticle;
+    [SerializeField] GameObject runParticle;
+    [SerializeField] Transform m_cloudParticle;
 
     private Rigidbody2D rb;
     private BoxCollider2D boxCollider;
@@ -118,6 +121,7 @@ public class PlayerController : MonoBehaviour
                 {
                     coyoteTimeCounter = coyoteTime;
 
+                    Instantiate(runParticle, m_cloudParticle.position, cloudParticle.transform.rotation);
                     //Sets Collision box size to normal
                     boxCollider.size = new Vector2(1f, 1f);
                     boxCollider.offset = new Vector2(0f, 0f);
@@ -137,7 +141,7 @@ public class PlayerController : MonoBehaviour
                     boxCollider.offset = new Vector2(0f, 0.28f);
                     //m_castPos.transform.position = (0.478, -0.483, 0);
                 }
-                rb.velocity = new Vector2(m_f_Axis * m_fMovement, rb.velocity.y);
+                rb.velocity = new Vector2(m_f_Axis * m_fMovement, rb.velocity.y);              
                 //JumpBuffer();
                 yield return new WaitForFixedUpdate();
 
@@ -366,7 +370,9 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(canBufferJump && IsGrounded()) 
+        if (IsGrounded()) { Instantiate(cloudParticle, m_cloudParticle.position, cloudParticle.transform.rotation); }
+        
+        if (canBufferJump && IsGrounded()) 
         {
             Debug.Log("Jump");
             rb.velocity = new Vector2(rb.velocity.x, m_fJump);
