@@ -16,6 +16,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] LayerMask m_layerMask;
     [SerializeField] LayerMask m_layerMaskCorner;
     [SerializeField] PlayerInput m_playerInput;
+    [SerializeField] GameObject m_playerShoot;
 
     private Rigidbody2D rb;
     private BoxCollider2D boxCollider;
@@ -44,6 +45,7 @@ public class PlayerController : MonoBehaviour
         m_playerInput = GetComponent<PlayerInput>();
         boxCollider = GetComponent<BoxCollider2D>();
         tr = GetComponent<TrailRenderer>();
+        m_playerShoot.SetActive(false);
     }
  
 
@@ -248,27 +250,27 @@ public class PlayerController : MonoBehaviour
         //Debug.Log("Player Cannot jump");
     }
 
-    public void JumpBuffer()
-    {
-        if (coyoteTimeCounter > 0f && jumpBufferCounter > 0f)
-        {
-            rb.velocity = new Vector2(rb.velocity.x, m_fJump);
+    //public void JumpBuffer()
+    //{
+    //    if (coyoteTimeCounter > 0f && jumpBufferCounter > 0f)
+    //    {
+    //        rb.velocity = new Vector2(rb.velocity.x, m_fJump);
 
-            if (c_JumpBuffer != null)
-            {
-                StopCoroutine(c_JumpBuffer);
-                //Debug.Log("JumpBuffered");
-                c_JumpBuffer = null;
+    //        if (c_JumpBuffer != null)
+    //        {
+    //            StopCoroutine(c_JumpBuffer);
+    //            //Debug.Log("JumpBuffered");
+    //            c_JumpBuffer = null;
 
-            }
+    //        }
 
-            jumpBufferCounter = 0f;
-        }
-        else
-        {
-            jumpBufferCounter -= Time.deltaTime;
-        }
-    }
+    //        jumpBufferCounter = 0f;
+    //    }
+    //    else
+    //    {
+    //        jumpBufferCounter -= Time.deltaTime;
+    //    }
+    //}
 
     public void Crouch(InputAction.CallbackContext context)
     {
@@ -289,6 +291,7 @@ public class PlayerController : MonoBehaviour
 
     public void Dash(InputAction.CallbackContext context)
     {
+        //tried adding dash but it didn't feel good so i removed it
         if(canDash)
         {
             //Debug.Log("Dashing");
@@ -341,6 +344,13 @@ public class PlayerController : MonoBehaviour
             if(isCrouched) { nearEdge = true; } else { nearEdge = false; }
             
                        
+        }
+
+        if(other.gameObject.CompareTag("GunPickup"))
+        {
+            m_playerShoot.SetActive(true);
+            
+            Destroy(other.gameObject);
         }
     }
 

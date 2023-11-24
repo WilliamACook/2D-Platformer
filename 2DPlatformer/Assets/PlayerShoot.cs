@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -64,10 +65,11 @@ public class PlayerShoot : MonoBehaviour
             //StartCoroutine(m_shake.Shake(.15f, .4f));
         }
 
-            hold = true;
+        hold = true;
+        StartCoroutine(c_Recoil());   
 
-            //checks if coroutine is running
-            if(c_fire == null)
+        //checks if coroutine is running
+        if (c_fire == null)
             {
                 c_fire = StartCoroutine(c_FireTimer());
                 canFire = false;
@@ -97,6 +99,14 @@ public class PlayerShoot : MonoBehaviour
         }
 
         
+    }
+    IEnumerator c_Recoil()
+    {
+        transform.localPosition += new Vector3(0.2f, 0, 0);
+        yield return new WaitForSeconds(0.03f);
+        transform.localPosition -= new Vector3(0.2f, 0, 0);
+        yield return new WaitForSeconds(0.03f);
+
     }
 
     // Update is called once per frame

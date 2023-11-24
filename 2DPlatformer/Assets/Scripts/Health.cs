@@ -9,6 +9,7 @@ public class Health : MonoBehaviour
     private ExplosiveBarrel ExplosiveBarrel;
     private SpriteRenderer sr;
     private float currentHealth;
+    private bool died;
     // Start is called before the first frame update
 
     private void Awake()
@@ -19,6 +20,7 @@ public class Health : MonoBehaviour
     void Start()
     {
         currentHealth = maxHealth;
+        died = false;
     }
 
     // Update is called once per frame
@@ -27,8 +29,9 @@ public class Health : MonoBehaviour
     {
         currentHealth -= amount;
 
-        if(currentHealth <= 0) 
+        if(currentHealth <= 0 && !died) 
         {
+            died = true;
             ExplosiveBarrel.Detonate();
             Die();
         }
