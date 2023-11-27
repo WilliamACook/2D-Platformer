@@ -67,7 +67,7 @@ public class PlayerShoot : MonoBehaviour
         }
 
         hold = true;
-        //StartCoroutine(c_Recoil());   
+        StartCoroutine(c_Recoil());   
 
         //checks if coroutine is running
         if (c_fire == null)
@@ -104,7 +104,6 @@ public class PlayerShoot : MonoBehaviour
     IEnumerator c_Recoil()
     {
         transform.localPosition += new Vector3(0.2f, 0, 0);
-        m_Shoot.Play();
         yield return new WaitForSeconds(0.03f);
         transform.localPosition -= new Vector3(0.2f, 0, 0);
         yield return new WaitForSeconds(0.03f);

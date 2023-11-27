@@ -51,7 +51,7 @@ public class BulletScript : MonoBehaviour
             var healthComponent = other.GetComponent<Health>();
             if (healthComponent != null)
             {
-                healthComponent.TakeDamage(10);
+                healthComponent.TakeDamage(damage);
             }
             Destroy(gameObject);
         }
