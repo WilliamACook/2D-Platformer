@@ -9,6 +9,8 @@ public class BulletScript : MonoBehaviour
     private Camera m_camera;
     private Rigidbody2D rb;
     private Vector3 mousePos;
+    private AudioSource m_bounceBullet;
+    private SpriteRenderer sr;
 
     [SerializeField] float force;
     [SerializeField] float size = 0.2f;
@@ -27,6 +29,8 @@ public class BulletScript : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        m_bounceBullet = GetComponent<AudioSource>();
+        sr = GetComponent<SpriteRenderer>();
         m_camera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
         mousePos = m_camera.ScreenToWorldPoint(Input.mousePosition);
         transform.localScale = new Vector3(size, size, 1);
@@ -61,11 +65,15 @@ public class BulletScript : MonoBehaviour
             Debug.Log("Hit");
             if (bounces == 0) 
             { 
-                Instantiate(effect, transform.position, Quaternion.identity);
+                Instantiate(effect, transform.position, Quaternion.identity);                
                 Destroy(gameObject); 
             
             }
-            else { bounces--; }
+            else 
+            {
+                bounces--; 
+                m_bounceBullet.Play();
+            }
 
         }
     }

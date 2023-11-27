@@ -9,10 +9,12 @@ public class ExplosiveBarrel : MonoBehaviour
     [SerializeField] CameraShake shake;
     [SerializeField] bool DestroyObjects;
     [SerializeField] float force;
+
+    private AudioSource m_explode;
     // Start is called before the first frame update
     void Start()
     {
-        
+        m_explode = GetComponent<AudioSource>();
     }
 
     private void OnDrawGizmos()
@@ -31,7 +33,8 @@ public class ExplosiveBarrel : MonoBehaviour
     {
         Collider2D[] objects = Physics2D.OverlapCircleAll(transform.position, explosionRange, explodable);
         StartCoroutine(shake.Shake(.15f, .4f));
-
+        m_explode.time = 1;
+        m_explode.Play();
         foreach(Collider2D obj in objects)
         {
             if (DestroyObjects)

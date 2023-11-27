@@ -20,6 +20,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] GameObject cloudParticle;
     [SerializeField] GameObject runParticle;
     [SerializeField] Transform m_cloudParticle;
+    [SerializeField] Transform spawn;
 
     private Rigidbody2D rb;
     private BoxCollider2D boxCollider;
@@ -355,6 +356,11 @@ public class PlayerController : MonoBehaviour
             m_playerShoot.SetActive(true);
             
             Destroy(other.gameObject);
+        }
+
+        if (other.gameObject.CompareTag("OutTheMap"))
+        {
+            transform.position = spawn.transform.position;
         }
     }
 
