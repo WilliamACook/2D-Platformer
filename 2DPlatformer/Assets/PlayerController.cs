@@ -208,7 +208,8 @@ public class PlayerController : MonoBehaviour
             if(coyoteTimeCounter > 0f && jumpBufferCounter > 0f || IsGrounded())
             {
                 //rb.AddForce(Vector2.up * m_fJump, ForceMode2D.Impulse);
-                rb.velocity = new Vector2(rb.velocity.x, m_fJump);               
+                rb.velocity = new Vector2(rb.velocity.x, m_fJump);
+                Instantiate(cloudParticle, m_cloudParticle.position, cloudParticle.transform.rotation);
                 //Debug.Log(jumpBufferCounter);
                 //JumpBuffer();
                 if (c_JumpBuffer != null)

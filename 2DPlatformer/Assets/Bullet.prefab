@@ -16,7 +16,6 @@ GameObject:
   - component: {fileID: -3233425547241756743}
   - component: {fileID: -8051590426313144899}
   - component: {fileID: 7333774649613172489}
-  - component: {fileID: 2900123790618050944}
   m_Layer: 8
   m_Name: Bullet
   m_TagString: Bullet
@@ -475,33 +474,3 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &2900123790618050944
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1741391931114081061}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7db70e0ea77f5ac47a8f4565a9406397, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_ShadowGroup: 0
-  m_ComponentVersion: 1
-  m_HasRenderer: 0
-  m_UseRendererSilhouette: 1
-  m_CastsShadows: 1
-  m_SelfShadows: 0
-  m_ApplyToSortingLayers: 00000000
-  m_ShapePath:
-  - {x: -0.5, y: -0.5, z: 0}
-  - {x: -0.5, y: 0.5000005, z: 0}
-  - {x: 0.50000095, y: 0.5000005, z: 0}
-  - {x: 0.50000095, y: -0.5, z: 0}
-  m_ShapePathHash: 0
-  m_Mesh: {fileID: 0}
-  m_InstanceId: -77058
-  m_LocalBounds:
-    m_Center: {x: 0.00000047683716, y: 0.00000023841858, z: 0}
-    m_Extent: {x: 0.5000005, y: 0.50000024, z: 0}
