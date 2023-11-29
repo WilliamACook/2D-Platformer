@@ -104,7 +104,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   force: 15
-  size: 0.2
+  size: 2.7
   bounces: 1
   damage: 10
   effect: {fileID: 2085081825057424142, guid: 0db57314fce77864d87cf858224cc78f, type: 3}
@@ -216,13 +216,13 @@ TrailRenderer:
   m_PreviewTimeScale: 1
   m_Parameters:
     serializedVersion: 3
-    widthMultiplier: 1
+    widthMultiplier: 0.2
     widthCurve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.13966474
+        value: 1
         inSlope: 0
         outSlope: 0
         tangentMode: 0

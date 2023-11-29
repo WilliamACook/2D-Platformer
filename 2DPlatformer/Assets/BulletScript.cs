@@ -11,10 +11,11 @@ public class BulletScript : MonoBehaviour
     private Vector3 mousePos;
     private AudioSource m_bounceBullet;
     private SpriteRenderer sr;
+    private TrailRenderer tr;
 
     [SerializeField] float force;
-    [SerializeField] float size = 0.2f;
-    [SerializeField] int bounces;
+    [SerializeField] public float size = 0.2f;
+    [SerializeField] public int bounces;
     [SerializeField] public float damage;
 
     [SerializeField] GameObject effect;
@@ -22,12 +23,12 @@ public class BulletScript : MonoBehaviour
 
     private void Awake()
     {
-       
     }
 
 
     void Start()
     {
+        tr = GetComponent<TrailRenderer>();
         rb = GetComponent<Rigidbody2D>();
         m_bounceBullet = GetComponent<AudioSource>();
         sr = GetComponent<SpriteRenderer>();
@@ -39,8 +40,10 @@ public class BulletScript : MonoBehaviour
         rb.velocity = new Vector2 (direction.x, direction.y).normalized * force;
         float rot = Mathf.Atan2(rotation.y, rotation.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Euler(0, 0, rot);
+        tr.startWidth = size;
         Destroy(gameObject, 10);
     }
+
 
     void OnTriggerEnter2D(Collider2D other)
     {
