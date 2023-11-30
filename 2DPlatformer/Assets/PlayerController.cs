@@ -25,6 +25,7 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rb;
     private BoxCollider2D boxCollider;
     private TrailRenderer tr;
+    private AudioSource snd_jump;
 
     private float coyoteTime = 0.3f;
     private float coyoteTimeCounter;
@@ -49,6 +50,7 @@ public class PlayerController : MonoBehaviour
         m_playerInput = GetComponent<PlayerInput>();
         boxCollider = GetComponent<BoxCollider2D>();
         tr = GetComponent<TrailRenderer>();
+        snd_jump = GetComponent<AudioSource>();
         m_playerShoot.SetActive(false);
     }
  
@@ -210,6 +212,7 @@ public class PlayerController : MonoBehaviour
                 //rb.AddForce(Vector2.up * m_fJump, ForceMode2D.Impulse);
                 rb.velocity = new Vector2(rb.velocity.x, m_fJump);
                 Instantiate(cloudParticle, m_cloudParticle.position, cloudParticle.transform.rotation);
+                snd_jump.Play();
                 //Debug.Log(jumpBufferCounter);
                 //JumpBuffer();
                 if (c_JumpBuffer != null)
@@ -383,6 +386,7 @@ public class PlayerController : MonoBehaviour
         {
             Debug.Log("Jump");
             rb.velocity = new Vector2(rb.velocity.x, m_fJump);
+            snd_jump.Play();
 
         }
     }

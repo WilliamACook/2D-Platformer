@@ -1,28 +1,28 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class Health : MonoBehaviour
+public class PlayerHealth : MonoBehaviour
 {
     [SerializeField] float maxHealth;
-    [SerializeField] GameObject effect;
-    private ExplosiveBarrel ExplosiveBarrel;
+    [SerializeField] AudioSource snd_hurt;
+    //[SerializeField] GameObject effect;
     private SpriteRenderer sr;
-    //private HealthBar healthBar;
+    private HealthBar healthBar;
     private float currentHealth;
     private bool died;
     // Start is called before the first frame update
 
     private void Awake()
     {
-        ExplosiveBarrel = GetComponent<ExplosiveBarrel>();
         sr = GetComponent<SpriteRenderer>();
-        //healthBar = GetComponentInChildren<HealthBar>();
+        healthBar = GetComponentInChildren<HealthBar>();
     }
     void Start()
     {
         currentHealth = maxHealth;
-        //healthBar.UpdateHealth(currentHealth, maxHealth);
+        healthBar.UpdateHealth(currentHealth, maxHealth);
         died = false;
     }
 
@@ -31,20 +31,23 @@ public class Health : MonoBehaviour
     public void TakeDamage(float amount)
     {
         currentHealth -= amount;
-        //healthBar.UpdateHealth(currentHealth, maxHealth);
+        healthBar.UpdateHealth(currentHealth, maxHealth);
+        snd_hurt.Play();
 
-        if(currentHealth <= 0 && !died) 
+        if (currentHealth <= 0 && !died)
         {
             died = true;
-            ExplosiveBarrel.Detonate();
             Die();
         }
     }
 
     void Die()
     {
-        Instantiate(effect, transform.position, Quaternion.identity);
-        sr.enabled = false;
-        Destroy(gameObject, 3);
+        SceneManager.LoadScene("TestingGround");
+        //Instantiate(effect, transform.position, Quaternion.identity);
+        //sr.enabled = false;
+        //Destroy(gameObject);
     }
 }
+
+

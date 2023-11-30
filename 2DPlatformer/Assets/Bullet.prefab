@@ -103,7 +103,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   force: 15
-  size: 2.7
+  size: 0.2
   bounces: 1
   damage: 10
   effect: {fileID: 2085081825057424142, guid: 0db57314fce77864d87cf858224cc78f, type: 3}

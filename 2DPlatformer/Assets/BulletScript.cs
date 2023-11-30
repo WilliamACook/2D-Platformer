@@ -12,6 +12,7 @@ public class BulletScript : MonoBehaviour
     private AudioSource m_bounceBullet;
     private SpriteRenderer sr;
     private TrailRenderer tr;
+    private PlayerHealth player;
 
     [SerializeField] float force;
     [SerializeField] public float size = 0.2f;
@@ -32,6 +33,7 @@ public class BulletScript : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         m_bounceBullet = GetComponent<AudioSource>();
         sr = GetComponent<SpriteRenderer>();
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerHealth>();
         m_camera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
         mousePos = m_camera.ScreenToWorldPoint(Input.mousePosition);
         transform.localScale = new Vector3(size, size, 1);
@@ -58,7 +60,17 @@ public class BulletScript : MonoBehaviour
             }
             Destroy(gameObject);
         }
-        
+
+        if (other.gameObject.CompareTag("Player"))
+        {
+            var healthComponent = other.GetComponent<PlayerHealth>();
+            if (healthComponent != null)
+            {
+                healthComponent.TakeDamage(damage);
+            }
+            Destroy(gameObject);
+        }
+
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -79,6 +91,16 @@ public class BulletScript : MonoBehaviour
             }
 
         }
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            var healthComponent = player.GetComponent<PlayerHealth>();
+            if (healthComponent != null)
+            {
+                healthComponent.TakeDamage(damage);
+            }
+            Destroy(gameObject);
+        }
+
     }
 
 
