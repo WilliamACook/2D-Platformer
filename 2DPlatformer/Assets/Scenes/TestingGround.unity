@@ -10364,7 +10364,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bullet: {fileID: 7788744424756002511, guid: 93ca67fc293edef40b26f3d54bd28731, type: 3}
-  amount: 2
+  amount: 1
 --- !u!58 &1750343154
 CircleCollider2D:
   m_ObjectHideFlags: 0
