@@ -46,6 +46,11 @@ public class ExplosiveBarrel : MonoBehaviour
             {
                 Vector2 dir = obj.transform.position - transform.position;
                 obj.GetComponent<Rigidbody2D>().AddForce(dir * force);
+                if(obj.CompareTag("Player"))
+                {
+
+                    obj.GetComponent<PlayerHealth>().TakeDamage(5);
+                }
             }
         }
     }

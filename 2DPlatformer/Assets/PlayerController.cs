@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
-using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -34,11 +33,11 @@ public class PlayerController : MonoBehaviour
     private float jumpBufferCounter;
 
     //Dashing
-    private bool canDash = true;
-    private bool isDashing;
-    private float dashingPower = 24f;
-    private float dashingTime = 0.2f;
-    private float dashingCooldown = 1.0f;
+    //private bool canDash = true;
+    //private bool isDashing;
+    //private float dashingPower = 24f;
+    //private float dashingTime = 0.2f;
+    //private float dashingCooldown = 1.0f;
 
     float m_f_Axis;
     bool isCrouched;
@@ -64,7 +63,7 @@ public class PlayerController : MonoBehaviour
         m_playerInput.actions.FindAction("Jump").canceled += Jump;
         m_playerInput.actions.FindAction("Crouch").performed += Crouch;
         m_playerInput.actions.FindAction("Crouch").canceled += Crouch;
-        m_playerInput.actions.FindAction("Dash").performed += Dash;
+        //m_playerInput.actions.FindAction("Dash").performed += Dash;
     }
 
     private void OnDisable()
@@ -75,7 +74,7 @@ public class PlayerController : MonoBehaviour
         m_playerInput.actions.FindAction("Jump").canceled -= Jump;
         m_playerInput.actions.FindAction("Crouch").performed -= Crouch;
         m_playerInput.actions.FindAction("Crouch").canceled -= Crouch;
-        m_playerInput.actions.FindAction("Dash").performed -= Dash;
+        //m_playerInput.actions.FindAction("Dash").performed -= Dash;
     }
 
     bool m_b_InMoveActive;
@@ -298,34 +297,34 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void Dash(InputAction.CallbackContext context)
-    {
-        //tried adding dash but it didn't feel good so i removed it
-        if(canDash)
-        {
-            //Debug.Log("Dashing");
-            StartCoroutine(Dash());
-        }
-    }
+    //public void Dash(InputAction.CallbackContext context)
+    //{
+    //    //tried adding dash but it didn't feel good so i removed it
+    //    if(canDash)
+    //    {
+    //        //Debug.Log("Dashing");
+    //        StartCoroutine(Dash());
+    //    }
+    //}
 
-    IEnumerator Dash()
-    {
-        canDash = false;
-        isDashing = true;
-        //float NormalGravity = rb.gravityScale;
-        //rb.gravityScale = 0f;
-        //if (rb.velocity.x > 0f)
-        //{
-        //    rb.velocity = new Vector2(transform.localScale.x * dashingPower, 0f);
-        //}
-        //else { rb.velocity = new Vector2(rb.velocity.x * -dashingPower, 0f); }
-        yield return new WaitForSeconds(dashingTime);
-        //rb.gravityScale = NormalGravity;
-        isDashing = false;
-        yield return new WaitForSeconds(dashingCooldown);
-        canDash = true;
+    //IEnumerator Dash()
+    //{
+    //    canDash = false;
+    //    isDashing = true;
+    //    //float NormalGravity = rb.gravityScale;
+    //    //rb.gravityScale = 0f;
+    //    //if (rb.velocity.x > 0f)
+    //    //{
+    //    //    rb.velocity = new Vector2(transform.localScale.x * dashingPower, 0f);
+    //    //}
+    //    //else { rb.velocity = new Vector2(rb.velocity.x * -dashingPower, 0f); }
+    //    yield return new WaitForSeconds(dashingTime);
+    //    //rb.gravityScale = NormalGravity;
+    //    isDashing = false;
+    //    yield return new WaitForSeconds(dashingCooldown);
+    //    canDash = true;
         
-    }
+    //}
 
     private void OnDrawGizmos()
     {
@@ -390,4 +389,5 @@ public class PlayerController : MonoBehaviour
 
         }
     }
+
 }

@@ -5,6 +5,7 @@ using UnityEngine;
 public class Lava : MonoBehaviour
 {
     [SerializeField] GameObject player;
+    
     private bool playerInLava;
     private void Awake()
     {
@@ -47,6 +48,7 @@ public class Lava : MonoBehaviour
             var healthComponent = player.GetComponent<PlayerHealth>();
             if (healthComponent != null)
             {
+                
                 healthComponent.TakeDamage(1);
             }
             yield return new WaitForSeconds(0.5f);

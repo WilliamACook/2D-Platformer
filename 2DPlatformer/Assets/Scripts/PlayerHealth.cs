@@ -7,6 +7,7 @@ public class PlayerHealth : MonoBehaviour
 {
     [SerializeField] float maxHealth;
     [SerializeField] AudioSource snd_hurt;
+    [SerializeField] CameraShake shake;
     //[SerializeField] GameObject effect;
     private SpriteRenderer sr;
     private HealthBar healthBar;
@@ -33,6 +34,7 @@ public class PlayerHealth : MonoBehaviour
         currentHealth -= amount;
         healthBar.UpdateHealth(currentHealth, maxHealth);
         snd_hurt.Play();
+        StartCoroutine(shake.Shake(.05f, .1f));
 
         if (currentHealth <= 0 && !died)
         {
